@@ -1,30 +1,29 @@
 package petClinic.model;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.List;
 
 @Entity
-@Table (name = "veterinarian")
+@Table(name = "veterinarian")
 public class Veterinarian {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "veterinarianId")
+    @Column(name = "id")
     private Long veterinarianId;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "address")
-    private Date address;
+    private String address;
 
     @Column(name = "speciality")
     private String speciality;
 
-    @OneToMany(mappedBy = "consult")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "veterinarian")
     private List<Consult> consults;
 
     public List<Consult> getConsults() {
@@ -35,10 +34,11 @@ public class Veterinarian {
         this.consults = consults;
     }
 
-    public Veterinarian() { }
+    public Veterinarian() {
+    }
 
-    public Veterinarian(Long veterinarianId, String firstName, String lastName, Date address, String speciality) {
-        this.veterinarianId = veterinarianId;
+
+    public Veterinarian(String firstName, String lastName, String address, String speciality) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -69,11 +69,11 @@ public class Veterinarian {
         this.lastName = lastName;
     }
 
-    public Date getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(Date address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 

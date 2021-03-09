@@ -4,15 +4,26 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import petClinic.model.Consult;
-import petClinic.utility.HibernetUtil;
+import petClinic.utility.HibernateUtil;
 
 import java.util.List;
 
 public class ConsultDao {
+    public Consult findByIdConsult(Long id) {
+        try {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Consult consult = session.find(Consult.class, id);
+            return consult;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     public void createConsult(Consult consult) {
         Transaction transaction = null;
         try {
-            Session session = HibernetUtil.getSessionFactory().openSession();
+            Session session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(consult);
             transaction.commit();
@@ -24,38 +35,25 @@ public class ConsultDao {
         }
     }
 
-    public List<Consult> findAllConsults() {
+    public void deleteConsult(Consult Consult) {
+        Transaction transaction = null;
         try {
-            Session session = HibernetUtil.getSessionFactory().openSession();
-            Query query = session.createQuery("from Consult", Consult.class);
-
-            List<Consult> consultList = query.list();
-
-            return consultList;
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.delete(Consult);
+            transaction.commit();
         } catch (Exception ex) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
             ex.printStackTrace();
-            return null;
-        }
-    }
-
-    public List<Consult> findByDateConsult() {
-        try {
-            Session session = HibernetUtil.getSessionFactory().openSession();
-            Query query = session.createQuery("from Consult c where c.date like 'XX'", Consult.class);
-
-            List<Consult> consultList = query.list();
-
-            return consultList;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
         }
     }
 
     public void updateConsult(Consult consult) {
         Transaction transaction = null;
         try {
-            Session session = HibernetUtil.getSessionFactory().openSession();
+            Session session = HibernateUtil.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.update(consult);
             transaction.commit();
@@ -66,21 +64,22 @@ public class ConsultDao {
             ex.printStackTrace();
         }
     }
-
-    public void deleteConsult(Consult consult) {
-        Transaction transaction = null;
+    public List<Consult> displayConsults() {
         try {
-            Session session = HibernetUtil.getSessionFactory().openSession();
-            transaction = session.beginTransaction();
-            session.delete(consult);
-            transaction.commit();
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Query query = session.createQuery("from Consult", Consult.class);
+            List<Consult> consults = query.list();
+            return consults;
         } catch (Exception ex) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             ex.printStackTrace();
+            return null;
         }
     }
-
-
+    public void displayAllCons() {
+        List<Consult> consults = displayConsults();
+        System.out.println("\tConsult: \t");
+        for (Consult cons : consults) {
+            System.out.println(cons);
+        }
+    }
 }

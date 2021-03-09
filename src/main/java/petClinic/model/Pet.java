@@ -10,22 +10,19 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "petId")
+    @Column(name = "id")
     private Long petId;
 
     @Column(name = "race")
     private String race;
 
-    @Column(name = "birthDate")
+    @Column(name = "birth_date")
     private String birthDate;
 
-    @Column(name = "isVaccinated")
+    @Column(name = "is_vaccinated")
     private Boolean isVaccinated;
 
-    @Column (name = "ownerName")
-    private String ownerName;
-
-    @OneToMany(mappedBy = "consult")
+    @OneToMany(mappedBy = "pet")
     private List<Consult> consults;
 
     public List<Consult> getConsults() {
@@ -35,15 +32,26 @@ public class Pet {
     public void setConsults(List<Consult> consults) {
         this.consults = consults;
     }
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
 
     public Pet() { }
 
-    public Pet(Long petId, String race, String birthDate, Boolean isVaccinated, String ownerName) {
-        this.petId = petId;
+    public Pet(String race, String birthDate, boolean isVaccinated, Owner owner) {
         this.race = race;
         this.birthDate = birthDate;
         this.isVaccinated = isVaccinated;
-        this.ownerName = ownerName;
+        this.owner = owner;
+
     }
 
     public Long getPetId() {
@@ -78,11 +86,4 @@ public class Pet {
         isVaccinated = vaccinated;
     }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-}
+   }

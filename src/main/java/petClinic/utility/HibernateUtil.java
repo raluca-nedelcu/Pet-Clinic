@@ -6,12 +6,13 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 import petClinic.model.Consult;
+import petClinic.model.Owner;
 import petClinic.model.Pet;
 import petClinic.model.Veterinarian;
 
 import java.util.Properties;
 
-public class HibernetUtil {
+public class HibernateUtil {
 
     private static SessionFactory sessionFactory;
 
@@ -27,13 +28,14 @@ public class HibernetUtil {
                 settings.put(Environment.USER, "root");
                 settings.put(Environment.PASS, "Parolamea2021");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
-                settings.put(Environment.SHOW_SQL, "false");
+                settings.put(Environment.SHOW_SQL, "true");
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
                 settings.put(Environment.HBM2DDL_AUTO, "update");
                 configuration.setProperties(settings);
                 configuration.addAnnotatedClass(Veterinarian.class);
                 configuration.addAnnotatedClass(Pet.class);
                 configuration.addAnnotatedClass(Consult.class);
+                configuration.addAnnotatedClass(Owner.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);

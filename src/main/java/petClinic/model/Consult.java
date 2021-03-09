@@ -3,12 +3,12 @@ package petClinic.model;
 import javax.persistence.*;
 
 @Entity
-@Table (name = "consult")
+@Table(name = "consult")
 public class Consult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "consultId")
+    @Column(name = "id")
     private Long consultId;
 
     @Column(name = "date")
@@ -26,11 +26,10 @@ public class Consult {
     private Pet pet;
 
 
+    public Consult() {
+    }
 
-    public Consult() {}
-
-    public Consult(Long consultId, String date, String description, Veterinarian veterinarian, Pet pet) {
-        this.consultId = consultId;
+    public Consult(String date, String description, Veterinarian veterinarian, Pet pet) {
         this.date = date;
         this.description = description;
         this.veterinarian = veterinarian;
